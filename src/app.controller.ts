@@ -1,14 +1,13 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { Ctx, EventPattern, NatsContext, Payload } from '@nestjs/microservices'
 import { AppService } from './app.service';
-import { Ctx, MessagePattern, NatsContext, Payload } from '@nestjs/microservices'
 
 @Controller()
-export class AppController {
-  private logger = new Logger('MicroService')
+export class AppController {  
   constructor(private readonly appService: AppService) {}
 
-  @MessagePattern('*')
+  @EventPattern('log')
   async getHello(@Payload() data: any, @Ctx() context: NatsContext) {
-    this.logger.log({...data, ...context})
+    this.appService.logEvent({ data, ...context})
   }
 }
