@@ -8,8 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern('*')
-  async getHello(@Payload() data: number[], @Ctx() context: NatsContext) {
-    this.logger.log(`reseaved: ${JSON.stringify(data)}`)
-    this.logger.log(context)
+  async getHello(@Payload() data: any, @Ctx() context: NatsContext) {
+    this.logger.log({...data, ...context})
   }
 }
